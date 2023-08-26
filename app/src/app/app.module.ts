@@ -10,10 +10,14 @@ import {MainPageComponent} from "./pages/main-page/main-page.component";
 import {WalletComponent} from "./pages/main-page/subcomponents/wallet/wallet.component";
 import {HeaderComponent} from "./pages/main-page/subcomponents/header/header.component";
 import{ProfileComponent} from "./pages/profile/profile.component";
-
+import {MarketplaceComponent} from "./pages/marketplace/marketplace.component";
+import {RankingsComponent} from "./pages/rankings/rankings.component";
+import {AchievementsComponent} from "./pages/achievements/achievements.component";
+import {HttpClientModule} from "@angular/common/http";
+import {CheckoutBuyComponent} from "./pages/checkout-buy/checkout-buy.component";
 @NgModule({
-  declarations: [AppComponent, MainPageComponent, WalletComponent, HeaderComponent, ProfileComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  declarations: [AppComponent, MainPageComponent, WalletComponent, HeaderComponent, ProfileComponent, WalletComponent, MarketplaceComponent, RankingsComponent, AchievementsComponent, CheckoutBuyComponent],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
