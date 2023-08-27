@@ -3,7 +3,7 @@ import {CacheService} from "../../services/cache.service";
 import {CheckoutService} from "../../services/checkout.service";
 import {Subscription} from "rxjs";
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from "@angular/router";
-import {NavController, PickerController} from "@ionic/angular";
+import {AlertController, NavController, PickerController} from "@ionic/angular";
 import {ApiService} from "../../services/api.service";
 
 @Component({
@@ -16,88 +16,9 @@ import {ApiService} from "../../services/api.service";
   providedIn: 'root',
 })
 export class CheckoutBuyComponent implements OnInit, CanActivate {
-
-
-  constructor(private cache: CacheService, private checkout: CheckoutService, private pickerCtrl: PickerController, private api: ApiService) {
-  }
-
-
-  async openPicker() {
-    const picker = await this.pickerCtrl.create({
-      columns: [
-        {
-          name: 'languages',
-          options: [
-            {
-              text: 'BitCoin',
-              value: 'btc',
-            },
-            {
-              text: 'Ethereum',
-              value: 'eth',
-            },
-            {
-              text: 'Binance Coin',
-              value: 'bnb',
-            },
-            {
-              text: 'Cardano',
-              value: 'ada',
-            },
-            {
-              text: 'Solana',
-              value: 'sol',
-            },
-            {
-              text: 'XRP',
-              value: 'ada',
-            },
-            {
-              text: 'Polkadot',
-              value: 'dot',
-            },
-            {
-              text: 'Dogecoin',
-              value: 'doge',
-            },
-            {
-              text: 'Terra',
-              value: 'luna',
-            },
-          ],
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
-        {
-          text: 'Confirm',
-          handler: (value: any) => {
-            this.selectedOrder = value.languages.text;
-            this.currency = value.languages.value;
-            this.loadCurrencyPrice();
-          },
-        },
-      ],
-    });
-    await picker.present();
-  }
-
   public currency: any;
   public currencyPrice: any;
-
-  async setAmount(amount: any) {
-    this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
-  }
-
-
-  async loadCurrencyPrice() {
-    this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4);
-  }
-
-
+  public acceptedPurchase: boolean = false;
   public items: any[] = [
     {
       name: 'Bitcoin',
@@ -174,9 +95,148 @@ export class CheckoutBuyComponent implements OnInit, CanActivate {
     },
 
   ];
-
-
   public selectedOrder: string = "";
+  public money: number = 0;
+  public showIcon: boolean = false;
+
+  constructor(private alertController: AlertController, private cache: CacheService, private checkout: CheckoutService, private pickerCtrl: PickerController, private api: ApiService) {
+  }
+
+  ngOnInit() {
+    this.selectedOrder = this.cache.get("checkoutOrder");
+    this.money = this.cache.get("walletValue")
+  }
+
+  async openPicker() {
+    const picker = await this.pickerCtrl.create({
+      columns: [
+        {
+          name: 'languages',
+          options: [
+            {
+              text: 'BitCoin',
+              value: 'btc',
+            },
+            {
+              text: 'Ethereum',
+              value: 'eth',
+            },
+            {
+              text: 'Binance Coin',
+              value: 'bnb',
+            },
+            {
+              text: 'Cardano',
+              value: 'ada',
+            },
+            {
+              text: 'Solana',
+              value: 'sol',
+            },
+            {
+              text: 'XRP',
+              value: 'ada',
+            },
+            {
+              text: 'Polkadot',
+              value: 'dot',
+            },
+            {
+              text: 'Dogecoin',
+              value: 'doge',
+            },
+            {
+              text: 'Terra',
+              value: 'luna',
+            },
+          ],
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirm',
+          handler: (value: any) => {
+            this.selectedOrder = value.languages.text;
+            this.currency = value.languages.value;
+            this.loadCurrencyPrice();
+          },
+        },
+      ],
+    });
+    await picker.present();
+  }
+
+  async setAmount(amount: any) {
+    this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
+  }
+
+  changeCheckbox(status: boolean) {
+    this.acceptedPurchase = !this.acceptedPurchase
+  }
+
+  async buy() {
+    if (this.money < this.currencyPrice) {
+      const alert = await this.alertController.create({
+        header: 'Purchase Failed',
+        subHeader: 'Not enough money!',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    } else {
+      if (this.acceptedPurchase) {
+
+
+
+
+        const alert = await this.alertController.create({
+          cssClass: 'Purchase Summary',
+          header: 'Last Warning!',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+            }, {
+              text: 'Okay',
+              handler: () => {
+                console.log('Bought Item!');
+              }
+            }
+          ]
+        });
+
+        await alert.present();
+
+
+      } else {
+
+
+        const alert = await this.alertController.create({
+          cssClass: 'my-custom-class',
+          header: 'Failed',
+          subHeader: 'You have to check the field "Accept Purchase"',
+          buttons: [
+            {
+              text: 'OK',
+              role: 'cancel',
+              cssClass: 'secondary'
+            }
+          ]
+        });
+
+        await alert.present();
+
+      }
+    }
+  }
+
+  async loadCurrencyPrice() {
+    this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4);
+  }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     this.setOrder(this.cache.get("checkoutOrder"))
@@ -186,12 +246,6 @@ export class CheckoutBuyComponent implements OnInit, CanActivate {
   setOrder(order: string) {
     console.log(order)
     this.selectedOrder = order;
-  }
-
-
-  ngOnInit() {
-    this.selectedOrder = this.cache.get("checkoutOrder");
-
   }
 
 
