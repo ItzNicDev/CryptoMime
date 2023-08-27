@@ -88,13 +88,13 @@ export class CheckoutBuyComponent implements OnInit, CanActivate {
   public currency: any;
   public currencyPrice: any;
 
-  setAmount(amount: any) {
-    this.currencyPrice = this.currencyPrice * amount;
+  async setAmount(amount: any) {
+    this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
   }
 
 
   async loadCurrencyPrice() {
-    this.currencyPrice = await this.api.getNow(this.currency)
+    this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4);
   }
 
 
