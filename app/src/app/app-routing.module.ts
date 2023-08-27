@@ -6,13 +6,17 @@ import {RankingsComponent} from "./pages/rankings/rankings.component";
 import {AchievementsComponent} from "./pages/achievements/achievements.component";
 import {MarketplaceComponent} from "./pages/marketplace/marketplace.component";
 import {CheckoutBuyComponent} from "./pages/checkout-buy/checkout-buy.component";
+
 const routes: Routes = [
-  {path: "", component:MainPageComponent},
-  {path: "wallet", component:MainPageComponent},
-  {path: "user", component:MarketplaceComponent},
-  {path: "rankings", component:RankingsComponent},
-  {path: "achievements", component:AchievementsComponent},
-  {path: "checkout/buy", component: CheckoutBuyComponent}
+  {path: "", component: MainPageComponent},
+  {path: "wallet", component: MainPageComponent},
+  {path: "user", component: MarketplaceComponent},
+  {path: "rankings", component: RankingsComponent},
+  {path: "achievements", component: AchievementsComponent},
+  {
+    path: "checkout", component: CheckoutBuyComponent,
+    canActivate: [CheckoutBuyComponent],
+  }
 
 ];
 

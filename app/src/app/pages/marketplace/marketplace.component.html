@@ -1,10 +1,10 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Marketplace</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
 
   <ion-card *ngFor="let item of items">
 
@@ -40,14 +40,14 @@
 
     <ion-card-content>
 
-      <ion-label style="font-size: 10px">{{item.description}}</ion-label>
+      <ion-label style="font-size: 15px">{{item.description}}</ion-label>
 
     </ion-card-content>
 
 
     <div style="margin-left: 10px; margin-bottom: 10px; display: flex;justify-content: center">
       <ion-button (click)="checkoutBuy(item.name)" size="small" color="success" style="width: 40%; margin-right: 20px">BUY</ion-button>
-      <ion-button size="small" color="danger" style="width: 40%; margin-right: 20px">SELL</ion-button>
+      <ion-button (click)="checkoutSell(item.name)" size="small" color="danger" style="width: 40%; margin-right: 20px">SELL</ion-button>
 
     </div>
 

@@ -1,1 +1,68 @@
-<ion-label style="text-align: center; margin-top: 20px">bought item: {{this.order}}</ion-label>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Checkout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Purchase</ion-card-title>
+      <ion-card-subtitle>From tangible to virtual</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Currency</ion-label>
+        <ion-label>{{this.selectedOrder}}</ion-label>
+        <ion-button fill="outline" size="small" (click)="openPicker()">
+          <ion-icon name="caret-down"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-label>Amount:</ion-label>
+        <ion-input #amount (change)="setAmount(amount.value)" slot="end"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Price:</ion-label>
+        <ion-label slot="end">{{this.currencyPrice}}</ion-label>
+      </ion-item>
+      <ion-item style="margin-top: 30px">
+        <ion-checkbox aria-label="label" slot="start"></ion-checkbox>
+        <ion-label>Accept Purchase</ion-label>
+      </ion-item>
+      <ion-button size="small" color="success" style="width: 100%; margin-top: 10px">BUY</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Purchase</ion-card-title>
+      <ion-card-subtitle>From tangible to virtual</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Currency</ion-label>
+        <ion-label>{{this.selectedOrder}}</ion-label>
+        <ion-button fill="outline" size="small" (click)="openPicker()">
+          <ion-icon name="caret-down"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-label>Amount:</ion-label>
+        <ion-input #amount (change)="setAmount(amount.value)" slot="end"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Price:</ion-label>
+        <ion-label slot="end">{{this.currencyPrice}}</ion-label>
+      </ion-item>
+      <ion-item style="margin-top: 30px">
+        <ion-checkbox aria-label="label" slot="start"></ion-checkbox>
+        <ion-label>Accept Purchase</ion-label>
+      </ion-item>
+      <ion-button size="small" color="danger" style="width: 100%; margin-top: 10px">SELL</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>
