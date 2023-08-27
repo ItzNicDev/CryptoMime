@@ -204,6 +204,7 @@ export class CheckoutBuyComponent implements OnInit, CanActivate {
               text: 'Okay',
               handler: () => {
                 console.log('Bought Item!');
+                this.showIcon = true;
               }
             }
           ]
