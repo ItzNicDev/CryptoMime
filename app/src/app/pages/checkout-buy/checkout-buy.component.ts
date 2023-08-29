@@ -5,12 +5,24 @@ import {Subscription} from "rxjs";
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from "@angular/router";
 import {AlertController, NavController, PickerController} from "@ionic/angular";
 import {ApiService} from "../../services/api.service";
+import {trigger, state, style, animate, transition} from '@angular/animations';
 
 @Component({
   selector: 'app-checkout-buy',
   templateUrl: './checkout-buy.component.html',
   styleUrls: ['./checkout-buy.component.scss'],
+
+  animations: [
+    trigger('fadeIn', [
+      state('void', style({opacity: 0})),
+      state('*', style({opacity: 1})),
+      transition(':enter, :leave', [
+        animate('250ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
+
 
 @Injectable({
   providedIn: 'root',
@@ -99,12 +111,20 @@ export class CheckoutBuyComponent implements OnInit, CanActivate {
   public money: number = 0;
   public showIcon: boolean = false;
 
+  //abhängig davon wird entweder buy oder sell card angezeigt!
+public activeCheckout: string = "buy";
+
   constructor(private alertController: AlertController, private cache: CacheService, private checkout: CheckoutService, private pickerCtrl: PickerController, private api: ApiService) {
   }
 
   ngOnInit() {
     this.selectedOrder = this.cache.get("checkoutOrder");
     this.money = this.cache.get("walletValue")
+  }
+
+  segmentHandler(segmentValue: any) {
+    console.log(segmentValue)
+    this.activeCheckout = segmentValue;
   }
 
   async openPicker() {
@@ -179,7 +199,7 @@ export class CheckoutBuyComponent implements OnInit, CanActivate {
   }
 
   async buy() {
-    if (this.money < this.currencyPrice) {
+    if (parseInt(this.cache.getEncrypted("walletValue")) < this.currencyPrice) {
       const alert = await this.alertController.create({
         header: 'Purchase Failed',
         subHeader: 'Not enough money!',
@@ -190,34 +210,34 @@ export class CheckoutBuyComponent implements OnInit, CanActivate {
       if (this.acceptedPurchase) {
 
 
+        // const alert = await this.alertController.create({
+        //   cssClass: 'Purchase Summary',
+        //   header: 'Last Warning!',
+        //   buttons: [
+        //     {
+        //       text: 'Cancel',
+        //       role: 'cancel',
+        //       cssClass: 'secondary',
+        //     }, {
+        //       text: '',
+        //       handler: () => {
+        console.log('Bought Item!');
 
+        //Updates Bank-account when buying currency
+        this.cache.setEncrypted((parseInt(this.cache.getEncrypted("walletValue")) - this.currencyPrice).toString(), "walletValue");
 
-        const alert = await this.alertController.create({
-          cssClass: 'Purchase Summary',
-          header: 'Last Warning!',
-          buttons: [
-            {
-              text: 'Cancel',
-              role: 'cancel',
-              cssClass: 'secondary',
-            }, {
-              text: 'Okay',
-              handler: () => {
-                console.log('Bought Item!');
-                this.showIcon = true;
-              }
-            }
-          ]
-        });
-
-        await alert.present();
-
-
+        this.showIcon = true;
+        setTimeout(() => {
+          this.showIcon = false;
+        }, 2000);
+        //       }
+        //     }
+        //   ]
+        // });
+        // await alert.present();
       } else {
 
-
         const alert = await this.alertController.create({
-          cssClass: 'my-custom-class',
           header: 'Failed',
           subHeader: 'You have to check the field "Accept Purchase"',
           buttons: [

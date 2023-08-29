@@ -1,15 +1,13 @@
-
-
-<ion-content>
+<ion-content [fullscreen]="true">
   <ion-tabs>
-    <ion-tab-bar slot="bottom">
+    <ion-tab-bar  [translucent]="true" slot="bottom" slot="bottom">
 
       <ion-tab-button tab="wallet">
         <ion-icon name="wallet"></ion-icon>
         Wallet
       </ion-tab-button>
 
-      <ion-tab-button tab="user">
+      <ion-tab-button tab="marketplace">
         <ion-icon name="basket"></ion-icon>
         Marketplace
       </ion-tab-button>
@@ -20,10 +18,13 @@
         Rankings
       </ion-tab-button>
 
-      <ion-tab-button tab="achievements">
-        <ion-icon name="ribbon" class="achievement-icon"></ion-icon>
-        Achievements
+      <ion-tab-button tab="miner">
+        <ion-icon name="hardware-chip-outline"></ion-icon>
+        Miner
       </ion-tab-button>
+
+
+
 
       <ion-tab-button tab="checkout">
         <ion-icon name="cart" class="cart-icon"></ion-icon>
@@ -31,10 +32,11 @@
       </ion-tab-button>
 
 
-
     </ion-tab-bar>
   </ion-tabs>
 
 
 </ion-content>
+
+
 

@@ -15,10 +15,12 @@ import {RankingsComponent} from "./pages/rankings/rankings.component";
 import {AchievementsComponent} from "./pages/achievements/achievements.component";
 import {HttpClientModule} from "@angular/common/http";
 import {CheckoutBuyComponent} from "./pages/checkout-buy/checkout-buy.component";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MinerComponent} from "./pages/miner/miner.component";
 
 @NgModule({
-  declarations: [AppComponent, MainPageComponent, WalletComponent, HeaderComponent, ProfileComponent, WalletComponent, MarketplaceComponent, RankingsComponent, AchievementsComponent, CheckoutBuyComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  declarations: [AppComponent, MainPageComponent, WalletComponent, HeaderComponent, ProfileComponent, WalletComponent, MarketplaceComponent, RankingsComponent, AchievementsComponent, CheckoutBuyComponent, MinerComponent],
+  imports: [BrowserAnimationsModule,BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

@@ -14,12 +14,24 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if(isNaN(parseInt(this.cache.getEncrypted("walletValue")))) {
+      this.cache.setEncrypted("5000","walletValue")
+    }
+
+
+
     if (this.cache.get("walletValue") == null) {
-      this.cache.set(5000, "walletValue")
-      this.walletValue = this.cache.get("walletValue");
+      // this.cache.set(5000, "walletValue");
+      this.cache.setEncrypted("5000","walletValue")
+
+     this.walletValue = parseInt(this.cache.getEncrypted("walletValue"));
+
+      // this.walletValue = this.cache.getEncrypted("walletValue");
 
     } else {
-      this.walletValue = this.cache.get("walletValue");
+
+      this.walletValue = parseInt(this.cache.getEncrypted("walletValue"));
     }
 
   }
@@ -32,6 +44,10 @@ export class WalletComponent implements OnInit {
     //     const encryptedValue = CryptoJS.AES.encrypt(value, 'test').toString();
     //     localStorage.setItem(key, encryptedValue);
     //   }
+  }
+
+  refreshWallet(){
+    location.reload();
   }
 
 }

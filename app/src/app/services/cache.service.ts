@@ -21,6 +21,7 @@ export class CacheService {
 
   setEncrypted(value: any, key: string) {
     const encryptedValue = CryptoJS.AES.encrypt(value, 'test').toString();
+    console.log(encryptedValue)
     localStorage.setItem(key, encryptedValue);
   }
 

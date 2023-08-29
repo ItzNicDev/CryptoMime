@@ -10,6 +10,9 @@ export class CheckoutService {
   constructor() {
   }
 
+  transfer() {
+
+  }
 
 
 }

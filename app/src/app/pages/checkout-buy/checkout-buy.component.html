@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header  [translucent]="true">
   <ion-toolbar>
     <ion-title>Checkout</ion-title>
   </ion-toolbar>
@@ -6,8 +6,20 @@
 
 <ion-content [fullscreen]="true">
 
+  <div style="padding: 10px 10px 10px 10px;  margin-right: 10px">
+  <ion-segment #segment (ionChange)="segmentHandler(segment.value)" value="buy">
+    <ion-segment-button  value="buy">
+      <ion-label>BUY</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="sell">
+      <ion-label>SELL</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  </div>
+
+
   <div style="display: flex; justify-content: center;">
-    <svg *ngIf="showIcon" style="position: absolute; z-index: 999; backdrop-filter: blur(10px);  margin-top: 200px"
+    <svg  [@fadeIn]="showIcon" *ngIf="showIcon" style="position: absolute; z-index: 999; backdrop-filter: blur(10px);  margin-top: 200px"
          xmlns="http://www.w3.org/2000/svg" width="250" viewBox="0 0 128 128" fill="none">
       <rect width="128" height="128" rx="15" fill="white" fill-opacity="0.12"/>
       <path
@@ -20,7 +32,7 @@
   </div>
 
 
-  <ion-card>
+  <ion-card *ngIf="activeCheckout == 'buy'">
     <ion-card-header>
       <ion-card-title>Purchase</ion-card-title>
       <ion-card-subtitle>From tangible to virtual</ion-card-subtitle>
@@ -35,7 +47,7 @@
       </ion-item>
       <ion-item>
         <ion-label>Amount:</ion-label>
-        <ion-input #amount (change)="setAmount(amount.value)" slot="end"></ion-input>
+        <ion-input #amount (keyup)="setAmount(amount.value)" [value]="1" slot="end"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Price:</ion-label>
@@ -50,7 +62,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <ion-card *ngIf="activeCheckout == 'sell'">
     <ion-card-header>
       <ion-card-title>Purchase</ion-card-title>
       <ion-card-subtitle>From tangible to virtual</ion-card-subtitle>
@@ -58,7 +70,6 @@
     <ion-card-content>
       <ion-item>
         <ion-label>Currency</ion-label>
-        <ion-label>{{this.selectedOrder}}</ion-label>
         <ion-button fill="outline" size="small" (click)="openPicker()">
           <ion-icon name="caret-down"></ion-icon>
         </ion-button>
