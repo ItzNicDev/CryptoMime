@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-test
-=======
 # CryptoMime App
 
 ![Cryptomime Logo](app_logo.png)
