@@ -1,0 +1,24 @@
+
+
+@keyframes wobble {
+  0% {
+    transform: translateX(0) rotate(0);
+  }
+  25% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+  50% {
+    transform: translateX(5px) rotate(5deg);
+  }
+  75% {
+    transform: translateX(-2px) rotate(-2deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+}
+
+.button:hover {
+  display: inline-block;
+  animation: wobble 0.5s ease;
+}

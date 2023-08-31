@@ -20,6 +20,15 @@ import {trigger, state, style, animate, transition} from '@angular/animations';
         animate('250ms ease-in-out'),
       ]),
     ]),
+
+    trigger('buttonSwap', [
+      state('void', style({opacity: 0})),
+      state('*', style({opacity: 1})),
+      transition(':enter, :leave', [
+        animate('750ms ease-in-out'),
+      ]),
+    ]),
+
   ],
 })
 
@@ -110,9 +119,9 @@ export class CheckoutBuyComponent implements OnInit, CanActivate {
   public selectedOrder: string = "";
   public money: number = 0;
   public showIcon: boolean = false;
-
+  private amountOfCoins: number = 0;
   //abhängig davon wird entweder buy oder sell card angezeigt!
-public activeCheckout: string = "buy";
+  public activeCheckout: string = "buy";
 
   constructor(private alertController: AlertController, private cache: CacheService, private checkout: CheckoutService, private pickerCtrl: PickerController, private api: ApiService) {
   }
@@ -127,7 +136,10 @@ public activeCheckout: string = "buy";
     this.activeCheckout = segmentValue;
   }
 
-  async openPicker() {
+  /**
+   * Handles opening and closing of Wheel-Selector.
+   */
+  async wheelHandler() {
     const picker = await this.pickerCtrl.create({
       columns: [
         {
@@ -191,14 +203,21 @@ public activeCheckout: string = "buy";
   }
 
   async setAmount(amount: any) {
+    this.amountOfCoins = amount
     this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
   }
 
+  /**
+   * Handles checkbox for "Accept Purchase"
+   */
   changeCheckbox(status: boolean) {
     this.acceptedPurchase = !this.acceptedPurchase
   }
 
-  async buy() {
+  /**
+   * Handles Currency-Price and your actual Money and books it off
+   */
+  async buyHandler(coinsAmount: any, boughtCoins: number | string | null | undefined) {
     if (parseInt(this.cache.getEncrypted("walletValue")) < this.currencyPrice) {
       const alert = await this.alertController.create({
         header: 'Purchase Failed',
@@ -208,33 +227,54 @@ public activeCheckout: string = "buy";
       await alert.present();
     } else {
       if (this.acceptedPurchase) {
+        let currencyAmount = parseInt(this.cache.get(this.currency)) + parseInt(coinsAmount);
+
+        //falls noch kein key angelegt wurde wird er hier mit eins
+        if (!this.cache.get(this.currency)) {
+          this.cache.set(boughtCoins, this.currency)
+        } else {
+          let currencyAmount = parseInt(this.cache.get(this.currency)) + parseInt(coinsAmount);
+          this.cache.set(currencyAmount, this.currency)
 
 
-        // const alert = await this.alertController.create({
-        //   cssClass: 'Purchase Summary',
-        //   header: 'Last Warning!',
-        //   buttons: [
-        //     {
-        //       text: 'Cancel',
-        //       role: 'cancel',
-        //       cssClass: 'secondary',
-        //     }, {
-        //       text: '',
-        //       handler: () => {
-        console.log('Bought Item!');
+        }
 
-        //Updates Bank-account when buying currency
+        //falls keine json angelegt ist
+        if (!this.cache.get("json")) {
+          let currencyAmount: number = parseInt(this.cache.get(this.currency));
+          let jsonPart = '"' + this.currency + '": { "amount": ' + currencyAmount + '}'
+          this.cache.set("{" + jsonPart + "}", "json");
+
+
+        } else {
+          let json = this.cache.get("json");
+          let currencyAmount: number = parseInt(this.cache.get(this.currency));
+
+          if (json.includes(this.currency)) {
+            alert("item schon drinnen!")
+            let jsonObj = JSON.parse(json);
+            jsonObj[this.currency].amount = currencyAmount;
+            let jsonString = JSON.stringify(jsonObj)
+            this.cache.set(jsonString, "json")
+
+
+          } else {
+            let json = this.cache.get("json");
+            let jsonPart = '"' + this.currency + '": { "amount": ' + (currencyAmount) + '}'
+            this.cache.set(json.replace("}}", "},") + jsonPart + "}", "json");
+
+          }
+
+        }
+
+
+
+
         this.cache.setEncrypted((parseInt(this.cache.getEncrypted("walletValue")) - this.currencyPrice).toString(), "walletValue");
-
         this.showIcon = true;
         setTimeout(() => {
           this.showIcon = false;
         }, 2000);
-        //       }
-        //     }
-        //   ]
-        // });
-        // await alert.present();
       } else {
 
         const alert = await this.alertController.create({
@@ -248,13 +288,17 @@ public activeCheckout: string = "buy";
             }
           ]
         });
-
         await alert.present();
-
       }
     }
   }
 
+
+
+
+  /**
+   * Loads the current currency price when a currency is selected.
+   */
   async loadCurrencyPrice() {
     this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4);
   }

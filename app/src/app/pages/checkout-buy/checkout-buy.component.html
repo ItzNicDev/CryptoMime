@@ -41,7 +41,7 @@
       <ion-item>
         <ion-label>Currency</ion-label>
         <ion-label>{{this.selectedOrder}}</ion-label>
-        <ion-button fill="outline" size="small" (click)="openPicker()">
+        <ion-button fill="outline" size="small" (click)="wheelHandler()">
           <ion-icon name="caret-down"></ion-icon>
         </ion-button>
       </ion-item>
@@ -58,7 +58,7 @@
                       slot="start"></ion-checkbox>
         <ion-label>Accept Purchase</ion-label>
       </ion-item>
-      <ion-button (click)="buy();" size="small" color="success" style="width: 100%; margin-top: 10px">BUY</ion-button>
+      <ion-button [@buttonSwap]="true"  (click)="buyHandler(amount.value, amount.value);" size="small" color="success" style="width: 100%; margin-top: 10px">BUY</ion-button>
     </ion-card-content>
   </ion-card>
 
@@ -70,7 +70,7 @@
     <ion-card-content>
       <ion-item>
         <ion-label>Currency</ion-label>
-        <ion-button fill="outline" size="small" (click)="openPicker()">
+        <ion-button  fill="outline" size="small" (click)="wheelHandler()">
           <ion-icon name="caret-down"></ion-icon>
         </ion-button>
       </ion-item>
@@ -92,7 +92,7 @@
         <ion-checkbox aria-label="label" slot="start"></ion-checkbox>
         <ion-label>Accept Purchase</ion-label>
       </ion-item>
-      <ion-button size="small" color="danger" style="width: 100%; margin-top: 10px">SELL</ion-button>
+      <ion-button [@buttonSwap]="true" size="small" color="danger" style="width: 100%; margin-top: 10px">SELL</ion-button>
     </ion-card-content>
   </ion-card>
 

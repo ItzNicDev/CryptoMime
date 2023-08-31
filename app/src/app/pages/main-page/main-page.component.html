@@ -38,24 +38,14 @@
         <ion-card-subtitle>Place for storing your Coins</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
-        <ion-item>
-          <ion-label>BTC</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>ETH</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Terra</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>BTC</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>ETH</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Terra</ion-label>
-        </ion-item>
+
+          <ion-item *ngFor="let currency of keys">
+            <ion-label>{{currency}}</ion-label>
+            <ion-label slot="end">{{jsonObj[currency].amount}}x</ion-label>
+          </ion-item>
+
+
+
       </ion-card-content>
     </ion-card>
   </div>
