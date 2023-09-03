@@ -10,10 +10,7 @@ export class AppComponent implements OnInit{
   constructor(private api: ApiService) {}
 
 
-
-
   async ngOnInit() {
-
 
  console.log(await this.api.getHigh("btc"));
     console.log(await this.api.getLow("btc"));

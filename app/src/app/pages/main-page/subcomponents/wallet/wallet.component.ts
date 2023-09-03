@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CacheService} from "../../../../services/cache.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-wallet',
@@ -10,7 +11,7 @@ export class WalletComponent implements OnInit {
 
   public walletValue: number = 0;
 
-  constructor(private cache: CacheService) {
+  constructor(private router: Router, private cache: CacheService) {
   }
 
   ngOnInit() {
@@ -20,18 +21,20 @@ export class WalletComponent implements OnInit {
     }
     if (this.cache.get("walletValue") == null) {
       this.cache.setEncrypted("5000", "walletValue")
-      this.walletValue = parseInt(this.cache.getEncrypted("walletValue"));
+      this.walletValue = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) + Number.EPSILON) * 100) / 100
     } else {
-      this.walletValue = parseInt(this.cache.getEncrypted("walletValue"));
+      this.walletValue = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) + Number.EPSILON) * 100) / 100
     }
-
 
 
   }
 
-
   refreshWallet() {
     location.reload();
+  }
+
+  openAchievments() {
+    this.router.navigate(["achievement"])
   }
 
 }

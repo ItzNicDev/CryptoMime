@@ -1,28 +1,28 @@
 <ion-tabs>
-  <ion-tab-bar [translucent]="true">
+  <ion-tab-bar [translucent]="true" slot="bottom" slot="bottom">
 
-    <ion-tab-button class="button" tab="wallet">
+    <ion-tab-button (click)="navigate('wallet')" class="button" tab="wallet">
       <ion-icon class="icon" name="wallet"></ion-icon>
       Wallet
     </ion-tab-button>
 
-    <ion-tab-button tab="marketplace">
+    <ion-tab-button (click)="navigate('marketplace')" tab="marketplace">
       <ion-icon name="basket"></ion-icon>
       Marketplace
     </ion-tab-button>
 
-    <ion-tab-button tab="rankings">
+    <ion-tab-button (click)="navigate('rankings')" tab="rankings">
       <ion-icon name="trophy" class="ranking-icon"></ion-icon>
       Rankings
     </ion-tab-button>
 
-    <ion-tab-button tab="miner">
+    <ion-tab-button (click)="navigate('miner')"  tab="miner">
       <ion-icon name="hardware-chip-outline"></ion-icon>
       Miner
     </ion-tab-button>
 
 
-    <ion-tab-button tab="checkout">
+    <ion-tab-button (click)="navigate('checkout')" tab="checkout">
       <ion-icon name="cart" class="cart-icon"></ion-icon>
       Checkout
     </ion-tab-button>

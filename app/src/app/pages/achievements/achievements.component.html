@@ -1,5 +1,17 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons (click)="navigateBack()" slot="start">
+      <ion-back-button default-href="#"></ion-back-button>
+    </ion-buttons>
     <ion-title>Achievements</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content class="ion-padding">
+
+
+  <ion-button size="small" (click)="clearLocalStorage();">clear storage</ion-button>
+  <br>
+  <ion-button size="small" (click)="cheat()">money cheat</ion-button>
+</ion-content>
+
+

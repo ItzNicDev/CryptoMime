@@ -1,4 +1,27 @@
 .center-content {
-  display:flex;
+  display: flex;
   justify-content: center;
+}
+
+
+.achievements {
+  cursor: pointer;
+  z-index: 999;
+  position: absolute;
+  margin-left: 290px;
+  margin-top: 170px;
+  width: 13px;
+}
+
+
+.arrow {
+  transition: 0.4s;
+cursor: pointer;
+  margin-bottom: 100px;
+}
+
+
+.arrow:hover {
+  transition: 0.4s;
+  height: 25px;
 }

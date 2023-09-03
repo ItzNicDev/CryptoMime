@@ -105,6 +105,9 @@ export class MarketplaceComponent implements OnInit {
   }
 
 
+
+
+
   checkoutBuy(currency: string) {
 
     this.cache.set(currency,"checkoutOrder")

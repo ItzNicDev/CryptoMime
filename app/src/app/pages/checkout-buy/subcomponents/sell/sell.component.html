@@ -1,0 +1,45 @@
+<div style="display: flex; justify-content: center;">
+  <svg [@fadeIn]="showIcon" *ngIf="showIcon"
+       style="position: absolute; z-index: 999; backdrop-filter: blur(10px);  margin-top: 150px"
+       xmlns="http://www.w3.org/2000/svg" width="250" viewBox="0 0 128 128" fill="none">
+    <rect width="128" height="128" rx="15" fill="white" fill-opacity="0.12"/>
+    <path
+      d="M20.6568 67.2789C18.6372 65.3956 18.5267 62.2317 20.41 60.2122L21.7534 58.7715C23.6367 56.752 26.8006 56.6415 28.8201 58.5248L57.1906 84.9807C59.2102 86.8639 59.3207 90.0278 57.4374 92.0474L56.094 93.488C54.2107 95.5076 51.0468 95.6181 49.0272 93.7348L20.6568 67.2789Z"
+      fill="#D9D9D9"/>
+    <path
+      d="M98.8189 34.5662C100.754 32.5967 103.92 32.569 105.89 34.5045L107.295 35.8852C109.264 37.8207 109.292 40.9864 107.356 42.956L56.923 94.2774C54.9875 96.247 51.8218 96.2746 49.8522 94.3391L48.4472 92.9585C46.4777 91.0229 46.45 87.8572 48.3855 85.8877L98.8189 34.5662Z"
+      fill="#D9D9D9"/>
+  </svg>
+</div>
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title [@buttonSwap]="true">Sell</ion-card-title>
+    <ion-card-subtitle [@buttonSwap]="true">From virtual to tangilbe</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label>Currency</ion-label>
+      <ion-label>{{this.selectedOrder}}</ion-label>
+      <ion-button fill="outline" size="small" (click)="wheelHandler()">
+        <ion-icon name="caret-down"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>Amount:</ion-label>
+      <ion-input #amount (keyup)="setAmount(amount.value)" [value]="1" slot="end"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Price:</ion-label>
+      <ion-label>${{this.currencyPrice}} </ion-label>
+    </ion-item>
+    <ion-item style="margin-top: 30px">
+      <ion-checkbox #checkbox aria-label="Label" (ionChange)="changeCheckbox(checkbox.value)"
+                    slot="start"></ion-checkbox>
+      <ion-label>Accept Purchase</ion-label>
+    </ion-item>
+    <ion-button [@buttonSwap]="true" (click)="buyHandler(amount.value, amount.value);" size="small" color="danger"
+                style="width: 100%; margin-top: 10px">SELL
+    </ion-button>
+  </ion-card-content>
+</ion-card>
