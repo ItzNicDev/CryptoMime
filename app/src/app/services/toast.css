@@ -1,0 +1,6 @@
+.custom-toast {
+  --position: absolute;
+  --top: 100px; /* Hier kannst du die genaue vertikale Position festlegen */
+  --left: 50%; /* Hier kannst du die horizontale Position festlegen */
+  --transform: translateX(-50%); /* Zentriere den Toast horizontal */
+}

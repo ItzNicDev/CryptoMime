@@ -38,7 +38,6 @@ export class CheckoutService {
       let currencyAmount: number = parseFloat(this.cache.get(currency));
 
       if (json.includes(currency)) {
-        alert("item schon drinnen!")
         let jsonObj = JSON.parse(json);
         jsonObj[currency].amount = currencyAmount;
         let jsonString = JSON.stringify(jsonObj)
