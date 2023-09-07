@@ -8,20 +8,51 @@
   cursor: pointer;
   z-index: 999;
   position: absolute;
-  margin-left: 290px;
-  margin-top: 170px;
-  width: 13px;
+  margin-left: 287px;
+  margin-top: 165px;
+  width: 15px;
 }
 
 
-.arrow {
+.arrow-left {
   transition: 0.4s;
-cursor: pointer;
+  cursor: pointer;
   margin-bottom: 100px;
 }
 
-
-.arrow:hover {
+.arrow-left:hover {
   transition: 0.4s;
   height: 25px;
+}
+
+.arrow-right {
+  transition: 0.4s;
+  cursor: pointer;
+  margin-bottom: 100px;
+}
+
+.arrow-right:hover {
+  transition: 0.4s;
+  height: 25px;
+}
+
+
+.wallet {
+  width: 333px;
+  height: 212px;
+}
+
+@media only screen and (max-width: 365px) {
+  //.arrow-left {
+  //  position: absolute;
+  //}
+
+  //.arrow-right {
+  //  position: absolute;
+  //}
+  //
+  .wallet {
+    transition: 0.5s;
+    width: 260px;
+  }
 }

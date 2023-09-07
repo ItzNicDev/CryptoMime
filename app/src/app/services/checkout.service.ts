@@ -11,7 +11,7 @@ export class CheckoutService {
   constructor(private cache: CacheService, private toast: ToastService) {
   }
 
-  transfer(currency: string, boughtCoins: any, coinsAmount: any, currencyPrice:number ) {
+  transfer(currency: string, boughtCoins: any, coinsAmount: any, currencyPrice: number) {
 
 
     // let currencyAmount = parseFloat(this.cache.get(this.currency)) + parseFloat(coinsAmount);
@@ -58,7 +58,7 @@ export class CheckoutService {
     //   this.showIcon = false;
     // }, 2000);
 
-    this.toast.presentToast("Purchase Successful", 2500,"success" , "bottom")
+    this.toast.presentToast("Purchase Successful", 2500, "success", "bottom")
 
   }
 

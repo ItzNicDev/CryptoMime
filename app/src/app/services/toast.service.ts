@@ -13,7 +13,7 @@ export class ToastService {
     const toast = await this.toastController.create({
       message: content,
       duration: duration,
-      position: "middle",
+      position: "bottom",
       color: color,
       cssClass: 'custom-toast'
 

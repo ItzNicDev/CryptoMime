@@ -8,9 +8,81 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title  size="large">Miner</ion-title>
+      <ion-title size="large">Miner</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Blockchain: {{hash}}</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Hardware Upgrades</ion-card-title>
+      <ion-card-subtitle>Better Hardware - Better Mining</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-item>Power Supply
+        <ion-button fill="clear" color="none" slot="end">
+          <ion-icon name="arrow-up-circle-outline"></ion-icon>
+        </ion-button>
+        <ion-label slot="end">1 lvl</ion-label>
+      </ion-item>
+
+      <ion-item>GPU
+        <ion-button fill="clear" color="none" slot="end">
+          <ion-icon name="arrow-up-circle-outline"></ion-icon>
+        </ion-button>
+        <ion-label slot="end">4 lvl</ion-label>
+      </ion-item>
+
+      <ion-item>Cooling
+        <ion-button fill="clear" color="none" slot="end">
+          <ion-icon name="arrow-up-circle-outline"></ion-icon>
+        </ion-button>
+        <ion-label slot="end">7 lvl</ion-label>
+      </ion-item>
+
+    </ion-card-content>
+  </ion-card>
+
+
+
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Monitoring</ion-card-title>
+      <ion-card-subtitle>Overview over your Components</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+
+        <ion-item>
+          <ion-label>GPU</ion-label>
+          <ion-label slot="end">VRAM: 24196 mB</ion-label>
+        </ion-item>
+
+      <ion-item>
+        <ion-label>Power Supply</ion-label>
+        <ion-label slot="end">600 Watts</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Cooling</ion-label>
+        <ion-label slot="end">600 Watts</ion-label>
+      </ion-item>
+
+    </ion-card-content>
+  </ion-card>
+
+
+
 
 
 </ion-content>
