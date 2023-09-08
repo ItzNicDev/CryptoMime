@@ -2,3 +2,15 @@ ion-item{
   --ion-item-background: rgba(28, 28, 29, 0);
 }
 
+.inventory-table-header {
+  z-index: 999;
+  font-size: 10px;
+  color: #757575;
+  margin-top: 5px;
+  //margin-bottom: -100px;
+}
+
+ion-col {
+  margin-top: -10px;
+  font-size: 10px;
+}

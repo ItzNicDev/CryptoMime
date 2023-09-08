@@ -63,7 +63,7 @@ export class BuyComponent implements OnInit {
             },
             {
               text: 'XRP',
-              value: 'ada',
+              value: 'xrp',
             },
             {
               text: 'Polkadot',

@@ -29,7 +29,6 @@ export class MainPageComponent implements OnInit {
 
 
   async ngOnInit() {
-
     //sofern es die json gibt!
     if (this.cache.get("json")) {
       this.jsonObj = JSON.parse(this.cache.get("json"))
