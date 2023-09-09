@@ -1,37 +1,32 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {EventEmitter, Injectable, OnInit} from '@angular/core';
 import {CacheService} from "./cache.service";
 import {ToastService} from "./toast.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CheckoutService {
+export class CheckoutService implements OnInit {
 
 
   constructor(private cache: CacheService, private toast: ToastService) {
   }
 
-  transfer(currency: string, boughtCoins: any, coinsAmount: any, currencyPrice: number) {
 
+  ngOnInit() {
+  }
 
-    // let currencyAmount = parseFloat(this.cache.get(this.currency)) + parseFloat(coinsAmount);
-
-    //falls noch kein key angelegt wurde wird er hier mit eins
+  transfer(currency: string, coinsAmount: any, currencyPrice: number) {
     if (!this.cache.get(currency)) {
-      this.cache.set(boughtCoins, currency)
+      this.cache.set(coinsAmount, currency)
     } else {
       let currencyAmount = parseFloat(this.cache.get(currency)) + parseFloat(coinsAmount);
       this.cache.set(currencyAmount, currency)
-
-
     }
 
-    //falls keine json angelegt ist
     if (!this.cache.get("json")) {
       let currencyAmount: number = parseFloat(this.cache.get(currency));
       let jsonPart = '"' + currency + '": { "amount": ' + currencyAmount + '}'
       this.cache.set("{" + jsonPart + "}", "json");
-
 
     } else {
       let json = this.cache.get("json");
@@ -53,13 +48,21 @@ export class CheckoutService {
 
 
     this.cache.setEncrypted((parseFloat(this.cache.getEncrypted("walletValue")) - currencyPrice).toString(), "walletValue");
-    // this.showIcon = true;
-    // setTimeout(() => {
-    //   this.showIcon = false;
-    // }, 2000);
-
     this.toast.presentToast("Purchase Successful", 2500, "success", "bottom")
 
+  }
+
+  getFees() {
+    let now = new Date();
+    let mapped = this.mapValue(now.getUTCHours(), 0, 100, 0, 5)
+    return Math.round((mapped * 100)) / 100;
+  }
+
+  mapValue(input: number, inputMin: number, inputMax: number, outputMin: number, outputMax: number): number {
+    input = Math.max(inputMin, Math.min(input, inputMax));
+    const inputRatio = (input - inputMin) / (inputMax - inputMin);
+    const output: number = outputMin + inputRatio * (outputMax - outputMin);
+    return output;
   }
 
 

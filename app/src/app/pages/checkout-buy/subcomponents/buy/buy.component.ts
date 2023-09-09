@@ -23,16 +23,19 @@ import {CheckoutService} from "../../../../services/checkout.service";
 export class BuyComponent implements OnInit {
   public selectedOrder: string = "";
   public currency: any;
-  public currencyPrice: any;
+  public currencyPrice: any = 0;
+  public currencyPriceWithFees: number = 0;
   private amountOfCoins: number = 0;
   public acceptedPurchase: boolean = false;
   public showIcon: boolean = false;
-
+  public feeNow: number = 0;
 
   constructor(private checkout: CheckoutService, private toast: ToastService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService) {
   }
 
   ngOnInit() {
+    this.checkout.getFees();
+    this.feeNow = this.checkout.getFees();
   }
 
   async wheelHandler() {
@@ -100,19 +103,27 @@ export class BuyComponent implements OnInit {
 
   async loadCurrencyPrice() {
     this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4);
+    // this.currencyPriceWithFees = this.currencyPrice + (this.currencyPriceWithFees * this.feeNow) / 100;
+    this.currencyPriceWithFees = Math.round((parseFloat(this.currencyPrice) + (parseFloat(this.currencyPrice) * this.feeNow) / 100 + Number.EPSILON) * 10000) / 10000
+
+
   }
 
   async setAmount(amount: any) {
     this.amountOfCoins = amount
     this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
+    this.currencyPriceWithFees = (Math.round((parseFloat(this.currencyPrice) + (parseFloat(this.currencyPrice) * this.feeNow) / 100 + Number.EPSILON) * 10000) / 10000);
+
+
+    // this.currencyPriceWithFees = this.currencyPrice + (this.currencyPriceWithFees * this.feeNow) / 100;
   }
 
   changeCheckbox(status: boolean) {
     this.acceptedPurchase = !this.acceptedPurchase
   }
 
-  async buyHandler(coinsAmount: any, boughtCoins: number | string | null | undefined) {
-    if (parseInt(this.cache.getEncrypted("walletValue")) < this.currencyPrice) {
+  async buyHandler(coinsAmount: any) {
+    if (parseInt(this.cache.getEncrypted("walletValue")) < this.currencyPriceWithFees) {
       const alert = await this.alertController.create({
         header: 'Purchase Failed',
         subHeader: 'Not enough money!',
@@ -121,56 +132,9 @@ export class BuyComponent implements OnInit {
       await alert.present();
     } else {
       if (this.acceptedPurchase) {
-        //
-        //
-        // // let currencyAmount = parseInt(this.cache.get(this.currency)) + parseInt(coinsAmount);
-        //
-        // //falls noch kein key angelegt wurde wird er hier mit eins
-        // if (!this.cache.get(this.currency)) {
-        //   this.cache.set(boughtCoins, this.currency)
-        // } else {
-        //   let currencyAmount = parseInt(this.cache.get(this.currency)) + parseInt(coinsAmount);
-        //   this.cache.set(currencyAmount, this.currency)
-        //
-        //
-        // }
-        //
-        // //falls keine json angelegt ist
-        // if (!this.cache.get("json")) {
-        //   let currencyAmount: number = parseInt(this.cache.get(this.currency));
-        //   let jsonPart = '"' + this.currency + '": { "amount": ' + currencyAmount + '}'
-        //   this.cache.set("{" + jsonPart + "}", "json");
-        //
-        //
-        // } else {
-        //   let json = this.cache.get("json");
-        //   let currencyAmount: number = parseInt(this.cache.get(this.currency));
-        //
-        //   if (json.includes(this.currency)) {
-        //     alert("item schon drinnen!")
-        //     let jsonObj = JSON.parse(json);
-        //     jsonObj[this.currency].amount = currencyAmount;
-        //     let jsonString = JSON.stringify(jsonObj)
-        //     this.cache.set(jsonString, "json")
-        //
-        //   } else {
-        //     let json = this.cache.get("json");
-        //     let jsonPart = '"' + this.currency + '": { "amount": ' + (currencyAmount) + '}'
-        //     this.cache.set(json.replace("}}", "},") + jsonPart + "}", "json");
-        //
-        //   }
-        // }
-        //
-        //
-        // this.cache.setEncrypted((parseInt(this.cache.getEncrypted("walletValue")) - this.currencyPrice).toString(), "walletValue");
-        // // this.showIcon = true;
-        // // setTimeout(() => {
-        // //   this.showIcon = false;
-        // // }, 2000);
-        //
-        // this.toast.presentToast("Purchase Successful", 2500,"success" , "bottom")
 
-        this.checkout.transfer(this.currency, boughtCoins, coinsAmount, this.currencyPrice)
+        this.checkout.transfer(this.currency, coinsAmount, this.currencyPriceWithFees)
+
 
       } else {
 

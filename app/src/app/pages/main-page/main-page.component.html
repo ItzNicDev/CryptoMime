@@ -22,27 +22,15 @@
     </ion-button>
   </div>
 
-
-  <!--  <ion-card style="background-color: #2f2f2f">-->
-
-  <!--    <ion-card-content>-->
   <ion-card style="height: auto">
     <ion-card-header>
       <ion-card-title>Finances</ion-card-title>
       <ion-card-subtitle>Place to keep track of finances</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-item>
-        -
-      </ion-item>
-      <ion-item>
-        -
-      </ion-item>
-      <ion-item>
-        -
-      </ion-item>
     </ion-card-content>
   </ion-card>
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>Inventory</ion-card-title>
@@ -57,32 +45,28 @@
           <ion-col>VALUE</ion-col>
         </ion-row>
       </ion-grid>
-
-      <div style="height: auto; background-color: #313133; border-radius: 10px; margin-top: 10px"
-           *ngFor="let currency of boughtCurrencyList; let index = index">
+      <div
+        style="height: auto; background: linear-gradient(90deg, #343436 0%, #222223 100%);; border-radius: 10px; margin-top: 5px"
+        *ngFor="let currency of boughtCurrencyList; let index = index">
         <ion-item lines="none">
-          <ion-label >{{currency}}</ion-label>
+          <ion-label>{{currency}}
+
+            <!--coin texture comming soon!!!-->
+            <!--            <svg style="position: absolute; top: 15px; left: 30px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">-->
+            <!--              <circle cx="8" cy="8" r="6" fill="blue" stroke="black" stroke-width="4"/>-->
+            <!--            </svg>-->
+
+
+          </ion-label>
           <ion-label>{{jsonObj[currency].amount}}x</ion-label>
           <ion-label slot="end">${{calculatedWorth[index]}}</ion-label>
         </ion-item>
-
       </div>
-
-      <!--      </ion-item>-->
-
-
     </ion-card-content>
   </ion-card>
-  <!--    </ion-card-content>-->
-  <!--  </ion-card>-->
 
 
 </ion-content>
-
-
-<!--<div style="height: 40px">-->
-
-<!--</div>-->
 
 
 

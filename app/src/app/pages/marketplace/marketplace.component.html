@@ -13,14 +13,16 @@
 
   <ion-card *ngFor="let item of items">
 
-    <!--      <div style="display: flex; justify-content: center; margin-bottom: 70px">-->
-    <!--        <div style="height: 2px; width: 95%; background-color: #212121"></div>-->
-    <!--      </div>-->
 
-<!--    <img src="assets/images/chart.png">-->
+
+<!--    <img style="height: 70px; width: 100%" src="assets/images/chart.png">-->
+      <ion-icon style="position: absolute; right: 0; margin-top: 10px; margin-right: 10px; font-size: 20px"  name="bookmark"></ion-icon>
+
 
     <ion-card-header>
+
       <ion-card-title>{{item.name}}
+
         <ion-label style=" float:right;font-size: 24px; color: #8f8f8f">${{item.now}}</ion-label>
         <br>
 
