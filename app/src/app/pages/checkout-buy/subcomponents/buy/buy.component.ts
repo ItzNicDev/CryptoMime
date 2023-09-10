@@ -5,6 +5,7 @@ import {CacheService} from "../../../../services/cache.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ToastService} from "../../../../services/toast.service";
 import {CheckoutService} from "../../../../services/checkout.service";
+import {AlertService} from "../../../../services/alert.service";
 
 @Component({
   selector: 'app-buy',
@@ -30,7 +31,7 @@ export class BuyComponent implements OnInit {
   public showIcon: boolean = false;
   public feeNow: number = 0;
 
-  constructor(private checkout: CheckoutService, private toast: ToastService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService) {
+  constructor(private checkout: CheckoutService, private toast: ToastService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private alert: AlertService) {
   }
 
   ngOnInit() {
@@ -152,6 +153,10 @@ export class BuyComponent implements OnInit {
         await alert.present();
       }
     }
+  }
+
+  showInfo() {
+    this.alert.showOk(this.feeNow + "% Fee?", "Covers transaction, processing and network maintenance costs for secure and efficient blockchain transactions! (changes every hour)")
   }
 
 }

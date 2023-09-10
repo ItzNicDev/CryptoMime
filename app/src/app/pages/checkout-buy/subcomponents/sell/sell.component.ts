@@ -1,8 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertController, PickerController} from "@ionic/angular";
+import {AlertController, PickerController, PickerOptions} from "@ionic/angular";
 import {ApiService} from "../../../../services/api.service";
 import {CacheService} from "../../../../services/cache.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {empty} from "rxjs";
+import {ToastService} from "../../../../services/toast.service";
+
+// import {createSecureContext} from "tls";
 
 @Component({
   selector: 'app-sell',
@@ -27,75 +31,68 @@ export class SellComponent implements OnInit {
   public showIcon: boolean = false;
 
 
-  constructor(private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService) {
+  public jsonObj: any = null;
+  public keys: any = null;
+
+  public boughtCurrencyList: string[] = [];
+  public boughtCurrencyPrices: any[] = [];
+  public boughtCurrencyAmount: number[] = [];
+
+
+  public calculatedWorth: number[] = [];
+
+
+  constructor(private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private toast: ToastService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    //sofern es die json gibt!
+    if (this.cache.get("json")) {
+      this.jsonObj = JSON.parse(this.cache.get("json"))
+      for (const key in this.jsonObj) {
+        this.boughtCurrencyList.push(key)
+        this.boughtCurrencyPrices.push((await this.api.getNow(key)));
+        this.boughtCurrencyAmount.push(this.jsonObj[key].amount)
+        this.calculatedWorth.push((await this.api.getNow(key)) * this.jsonObj[key].amount)
+      }
+    }
+    console.log(this.boughtCurrencyList)
   }
 
   async wheelHandler() {
-    const picker = await this.pickerCtrl.create({
-      columns: [
-        {
-          name: 'languages',
-          options: [
-            {
-              text: 'BitCoin',
-              value: 'btc',
-            },
-            {
-              text: 'Ethereum',
-              value: 'eth',
-            },
-            {
-              text: 'Binance Coin',
-              value: 'bnb',
-            },
-            {
-              text: 'Cardano',
-              value: 'ada',
-            },
-            {
-              text: 'Solana',
-              value: 'sol',
-            },
-            {
-              text: 'XRP',
-              value: 'xrp',
-            },
-            {
-              text: 'Polkadot',
-              value: 'dot',
-            },
-            {
-              text: 'Dogecoin',
-              value: 'doge',
-            },
-            {
-              text: 'Terra',
-              value: 'luna',
-            },
-          ],
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-        },
-        {
-          text: 'Confirm',
-          handler: (value: any) => {
-            this.selectedOrder = value.languages.text;
-            this.currency = value.languages.value;
-            this.loadCurrencyPrice();
+    if (this.boughtCurrencyList.length != 0) {
+      let wheelJson: PickerOptions = {
+        columns: [
+          {
+            name: 'languages',
+            options: this.boughtCurrencyList.map((value) => ({
+              text: value,
+              value: value,
+            })),
           },
-        },
-      ],
-    });
-    await picker.present();
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+          },
+          {
+            text: 'Confirm',
+            handler: (value: any) => {
+              // You can access the selected values as follows:
+              this.selectedOrder = value.languages.text;
+              this.currency = value.languages.value;
+              this.loadCurrencyPrice();
+            },
+          },
+        ],
+      };
+      const picker = await this.pickerCtrl.create(wheelJson);
+      await picker.present();
+    } else {
+      this.toast.presentToast("You don´t own any coins!", 1500, "danger", "bottom", "alert-outline")
+    }
   }
-
 
   async loadCurrencyPrice() {
     this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4);
@@ -103,7 +100,7 @@ export class SellComponent implements OnInit {
 
   async setAmount(amount: any) {
     this.amountOfCoins = amount
-    this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
+    // this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
   }
 
   /**
@@ -112,7 +109,6 @@ export class SellComponent implements OnInit {
   changeCheckbox(status: boolean) {
     this.acceptedPurchase = !this.acceptedPurchase
   }
-
 
   async buyHandler(coinsAmount: any, boughtCoins: number | string | null | undefined) {
     if (parseInt(this.cache.getEncrypted("walletValue")) < this.currencyPrice) {
@@ -185,6 +181,4 @@ export class SellComponent implements OnInit {
       }
     }
   }
-
-
 }

@@ -48,7 +48,7 @@ export class CheckoutService implements OnInit {
 
 
     this.cache.setEncrypted((parseFloat(this.cache.getEncrypted("walletValue")) - currencyPrice).toString(), "walletValue");
-    this.toast.presentToast("Purchase Successful", 2500, "success", "bottom")
+    this.toast.presentToast("Transaction was Successful!", 2500, "success", "bottom","checkmark")
 
   }
 
