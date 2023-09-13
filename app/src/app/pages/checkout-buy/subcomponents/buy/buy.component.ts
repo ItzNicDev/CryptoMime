@@ -35,7 +35,6 @@ export class BuyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkout.getFees();
     this.feeNow = this.checkout.getFees();
   }
 
@@ -134,7 +133,7 @@ export class BuyComponent implements OnInit {
     } else {
       if (this.acceptedPurchase) {
 
-        this.checkout.transfer(this.currency, coinsAmount, this.currencyPriceWithFees)
+        this.checkout.transferBuy(this.currency, coinsAmount, this.currencyPriceWithFees)
 
 
       } else {

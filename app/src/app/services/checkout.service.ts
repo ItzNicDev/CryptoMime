@@ -15,7 +15,7 @@ export class CheckoutService implements OnInit {
   ngOnInit() {
   }
 
-  transfer(currency: string, coinsAmount: any, currencyPrice: number) {
+  transferBuy(currency: string, coinsAmount: any, currencyPrice: number) {
     if (!this.cache.get(currency)) {
       this.cache.set(coinsAmount, currency)
     } else {
@@ -48,7 +48,29 @@ export class CheckoutService implements OnInit {
 
 
     this.cache.setEncrypted((parseFloat(this.cache.getEncrypted("walletValue")) - currencyPrice).toString(), "walletValue");
-    this.toast.presentToast("Transaction was Successful!", 2500, "success", "bottom","checkmark")
+    this.toast.presentToast("Transaction was Successful!", 2500, "success", "bottom", "checkmark")
+
+  }
+
+
+  transferSell(currency: string, amount: any, currencyPrice: number) {
+
+    this.cache.set((this.cache.get(currency) - amount).toString(), currency)
+    let jsonString = this.cache.get("json");
+    var jsonObject = JSON.parse(jsonString);
+    jsonObject[currency].amount = jsonObject[currency].amount - amount;
+
+    var updatedJsonString = JSON.stringify(jsonObject);
+
+    this.cache.set(updatedJsonString, "json");
+    if (parseFloat(this.cache.get(currency)) <= 0) {
+      this.cache.remove(currency);
+      delete jsonObject[currency];
+      console.log(jsonObject);
+      this.cache.set(JSON.stringify(jsonObject).replace("{}", ""), "json")
+    }
+
+    this.cache.setEncrypted((parseFloat(this.cache.getEncrypted("walletValue")) + currencyPrice).toString(), "walletValue");
 
   }
 
@@ -56,6 +78,52 @@ export class CheckoutService implements OnInit {
     let now = new Date();
     let mapped = this.mapValue(now.getUTCHours(), 0, 100, 0, 5)
     return Math.round((mapped * 100)) / 100;
+  }
+
+  formatCurrency(value: string): string {
+    switch (value) {
+      case "btc": {
+        return "Bitcoin";
+        break;
+      }
+      case "eth": {
+        return "Ethereum";
+        break;
+      }
+      case "bnb": {
+        return "Binance Coin";
+        break;
+      }
+      case "ada": {
+        return "Cardano";
+        break;
+      }
+      case "sol": {
+        return "Solana";
+        break;
+      }
+      case "xrp": {
+        return "XRP";
+        break;
+      }
+      case "dot": {
+        return "Polkadot";
+        break;
+      }
+      case "doge": {
+        return "Dogecoin";
+        break;
+      }
+      case "luna": {
+        return "Terra";
+        break;
+      }
+      default: {
+        return "";
+        break;
+      }
+    }
+
   }
 
   mapValue(input: number, inputMin: number, inputMax: number, outputMin: number, outputMax: number): number {

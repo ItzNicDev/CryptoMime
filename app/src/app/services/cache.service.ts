@@ -10,12 +10,16 @@ export class CacheService {
   constructor() {
   }
 
-  set(value: any, key: string, ) {
+  set(value: any, key: string,) {
     localStorage.setItem(key, value);
   }
 
   get(key: string): any {
     return localStorage.getItem(key);
+  }
+
+  remove(key: string) {
+    localStorage.removeItem(key);
   }
 
 

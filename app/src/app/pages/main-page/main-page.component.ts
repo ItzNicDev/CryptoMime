@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {CacheService} from "../../services/cache.service";
 import {IonApp, Platform} from "@ionic/angular";
 import {ApiService} from "../../services/api.service";
+import {CheckoutService} from "../../services/checkout.service";
 
 @Component({
   selector: 'app-main-page',
@@ -19,11 +20,12 @@ export class MainPageComponent implements OnInit {
   public boughtCurrencyList: string[] = [];
   public boughtCurrencyPrices: any[] = [];
   public boughtCurrencyAmount: number[] = [];
+  public boughtCurrencyListFormated: string[] = [];
 
 
   public calculatedWorth: number[] = [];
 
-  constructor(private cache: CacheService, private api: ApiService) {
+  constructor(public checkout: CheckoutService, private cache: CacheService, private api: ApiService) {
 
   }
 
@@ -33,10 +35,16 @@ export class MainPageComponent implements OnInit {
     if (this.cache.get("json")) {
       this.jsonObj = JSON.parse(this.cache.get("json"))
       for (const key in this.jsonObj) {
-        this.boughtCurrencyList.push(key)
-        this.boughtCurrencyPrices.push((await this.api.getNow(key)));
-        this.boughtCurrencyAmount.push(this.jsonObj[key].amount)
-        this.calculatedWorth.push((await this.api.getNow(key)) * this.jsonObj[key].amount)
+        this.boughtCurrencyList.push(key);
+        this.boughtCurrencyListFormated.push(this.checkout.formatCurrency(key))
+
+        // this.boughtCurrencyPrices.push((await this.api.getNow(key)));
+        // this.boughtCurrencyAmount.push(this.jsonObj[key].amount)
+
+        const roundedNumber = (parseFloat(await this.api.getNow(key)) * this.jsonObj[key].amount).toFixed(4); // Rounds to 4 decimal places
+
+        this.calculatedWorth.push(parseFloat(roundedNumber))
+
       }
     }
   }

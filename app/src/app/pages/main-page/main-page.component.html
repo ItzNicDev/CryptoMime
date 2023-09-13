@@ -47,9 +47,9 @@
       </ion-grid>
       <div
         style="height: auto; background: linear-gradient(90deg, #343436 0%, #222223 100%);; border-radius: 10px; margin-top: 5px"
-        *ngFor="let currency of boughtCurrencyList; let index = index">
+        *ngFor="let currency of boughtCurrencyList; let index = index;">
         <ion-item lines="none">
-          <ion-label>{{currency}}
+          <ion-label>{{this.checkout.formatCurrency(currency)}}
 
             <!--coin texture comming soon!!!-->
             <!--            <svg style="position: absolute; top: 15px; left: 30px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">-->

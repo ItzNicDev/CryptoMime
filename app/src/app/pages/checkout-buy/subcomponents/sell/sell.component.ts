@@ -5,6 +5,8 @@ import {CacheService} from "../../../../services/cache.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {empty} from "rxjs";
 import {ToastService} from "../../../../services/toast.service";
+import {CheckoutService} from "../../../../services/checkout.service";
+import {alarm, alert} from "ionicons/icons";
 
 // import {createSecureContext} from "tls";
 
@@ -25,11 +27,11 @@ import {ToastService} from "../../../../services/toast.service";
 export class SellComponent implements OnInit {
   public selectedOrder: string = "";
   public currency: any;
-  public currencyPrice: any;
+  public currencyPrice: any = 0;
   private amountOfCoins: number = 0;
   public acceptedPurchase: boolean = false;
   public showIcon: boolean = false;
-
+  public currencyPriceWithFees: number = 0;
 
   public jsonObj: any = null;
   public keys: any = null;
@@ -37,15 +39,19 @@ export class SellComponent implements OnInit {
   public boughtCurrencyList: string[] = [];
   public boughtCurrencyPrices: any[] = [];
   public boughtCurrencyAmount: number[] = [];
-
+  public feeNow: number = 0;
 
   public calculatedWorth: number[] = [];
 
 
-  constructor(private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private toast: ToastService) {
+  constructor(private checkout: CheckoutService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private toast: ToastService) {
   }
 
   async ngOnInit() {
+
+    this.feeNow = this.checkout.getFees();
+
+
     //sofern es die json gibt!
     if (this.cache.get("json")) {
       this.jsonObj = JSON.parse(this.cache.get("json"))
@@ -66,7 +72,7 @@ export class SellComponent implements OnInit {
           {
             name: 'languages',
             options: this.boughtCurrencyList.map((value) => ({
-              text: value,
+              text: this.checkout.formatCurrency(value) + " (" + this.cache.get(value) + " pcs.)",
               value: value,
             })),
           },
@@ -95,12 +101,17 @@ export class SellComponent implements OnInit {
   }
 
   async loadCurrencyPrice() {
-    this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4);
+    this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4)
+    this.currencyPriceWithFees = Math.round((parseFloat(this.currencyPrice) - (parseFloat(this.currencyPrice) * this.feeNow) / 100 + Number.EPSILON) * 10000) / 10000
+
   }
 
   async setAmount(amount: any) {
     this.amountOfCoins = amount
-    // this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
+    this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
+    this.currencyPriceWithFees = Math.round((parseFloat(this.currencyPrice) - (parseFloat(this.currencyPrice) * this.feeNow) / 100 + Number.EPSILON) * 10000) / 10000
+
+    console.log(amount)
   }
 
   /**
@@ -110,75 +121,43 @@ export class SellComponent implements OnInit {
     this.acceptedPurchase = !this.acceptedPurchase
   }
 
-  async buyHandler(coinsAmount: any, boughtCoins: number | string | null | undefined) {
-    if (parseInt(this.cache.getEncrypted("walletValue")) < this.currencyPrice) {
+  async sellHandler(coinsAmount: any) {
+
+
+    if (!this.acceptedPurchase) {
       const alert = await this.alertController.create({
-        header: 'Purchase Failed',
-        subHeader: 'Not enough money!',
-        buttons: ['OK'],
+        header: 'Failed',
+        subHeader: 'You have to check the field "Accept Purchase"',
+        buttons: [
+          {
+            text: 'OK',
+            role: 'cancel',
+            cssClass: 'secondary'
+          }
+        ]
       });
       await alert.present();
-    } else {
-      if (this.acceptedPurchase) {
-        let currencyAmount = parseInt(this.cache.get(this.currency)) + parseInt(coinsAmount);
-
-        //falls noch kein key angelegt wurde wird er hier mit eins
-        if (!this.cache.get(this.currency)) {
-          this.cache.set(boughtCoins, this.currency)
-        } else {
-          let currencyAmount = parseInt(this.cache.get(this.currency)) + parseInt(coinsAmount);
-          this.cache.set(currencyAmount, this.currency)
-
-
-        }
-
-        //falls keine json angelegt ist
-        if (!this.cache.get("json")) {
-          let currencyAmount: number = parseInt(this.cache.get(this.currency));
-          let jsonPart = '"' + this.currency + '": { "amount": ' + currencyAmount + '}'
-          this.cache.set("{" + jsonPart + "}", "json");
-
-
-        } else {
-          let json = this.cache.get("json");
-          let currencyAmount: number = parseInt(this.cache.get(this.currency));
-
-          if (json.includes(this.currency)) {
-            alert("item schon drinnen!")
-            let jsonObj = JSON.parse(json);
-            jsonObj[this.currency].amount = currencyAmount;
-            let jsonString = JSON.stringify(jsonObj)
-            this.cache.set(jsonString, "json")
-
-          } else {
-            let json = this.cache.get("json");
-            let jsonPart = '"' + this.currency + '": { "amount": ' + (currencyAmount) + '}'
-            this.cache.set(json.replace("}}", "},") + jsonPart + "}", "json");
-
-          }
-        }
-
-
-        this.cache.setEncrypted((parseInt(this.cache.getEncrypted("walletValue")) - this.currencyPrice).toString(), "walletValue");
-        this.showIcon = true;
-        setTimeout(() => {
-          this.showIcon = false;
-        }, 2000);
-      } else {
-
-        const alert = await this.alertController.create({
-          header: 'Failed',
-          subHeader: 'You have to check the field "Accept Purchase"',
-          buttons: [
-            {
-              text: 'OK',
-              role: 'cancel',
-              cssClass: 'secondary'
-            }
-          ]
-        });
-        await alert.present();
-      }
     }
+    if (this.acceptedPurchase) {
+      console.log("coinsAmount: " + coinsAmount + "  cache: " + this.cache.get(this.currency))
+      // if (coinsAmount > this.cache.get(this.currency)) {
+      //   const alert = await this.alertController.create({
+      //     header: 'Ups',
+      //     subHeader: 'You Don not own that many Coins!',
+      //     buttons: ['OK'],
+      //   });
+      //   await alert.present();
+      // } else {
+
+        this.checkout.transferSell(this.currency, coinsAmount, this.currencyPriceWithFees)
+
+        this.toast.presentToast("Successfuly Sold Currency", 1500, "danger", "bottom", "checkmark")
+
+      // }
+
+
+    }
+
+
   }
 }
