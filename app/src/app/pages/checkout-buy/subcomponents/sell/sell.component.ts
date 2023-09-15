@@ -7,6 +7,7 @@ import {empty} from "rxjs";
 import {ToastService} from "../../../../services/toast.service";
 import {CheckoutService} from "../../../../services/checkout.service";
 import {alarm, alert} from "ionicons/icons";
+import {AlertService} from "../../../../services/alert.service";
 
 // import {createSecureContext} from "tls";
 
@@ -19,7 +20,7 @@ import {alarm, alert} from "ionicons/icons";
       state('void', style({opacity: 0})),
       state('*', style({opacity: 1})),
       transition(':enter, :leave', [
-        animate('250ms ease-in-out'),
+        animate('400ms ease-in-out'),
       ]),
     ]),
   ],
@@ -41,16 +42,18 @@ export class SellComponent implements OnInit {
   public boughtCurrencyAmount: number[] = [];
   public feeNow: number = 0;
 
+  public accountBalance: number = 0;
+
   public calculatedWorth: number[] = [];
 
 
-  constructor(private checkout: CheckoutService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private toast: ToastService) {
+  constructor(private alert:AlertService ,private checkout: CheckoutService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private toast: ToastService) {
   }
 
   async ngOnInit() {
 
     this.feeNow = this.checkout.getFees();
-
+    this.accountBalance = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) + this.currencyPriceWithFees + Number.EPSILON) * 1000) / 1000
 
     //sofern es die json gibt!
     if (this.cache.get("json")) {
@@ -103,6 +106,7 @@ export class SellComponent implements OnInit {
   async loadCurrencyPrice() {
     this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4)
     this.currencyPriceWithFees = Math.round((parseFloat(this.currencyPrice) - (parseFloat(this.currencyPrice) * this.feeNow) / 100 + Number.EPSILON) * 10000) / 10000
+    this.accountBalance = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) + this.currencyPriceWithFees + Number.EPSILON) * 1000) / 1000
 
   }
 
@@ -111,7 +115,14 @@ export class SellComponent implements OnInit {
     this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
     this.currencyPriceWithFees = Math.round((parseFloat(this.currencyPrice) - (parseFloat(this.currencyPrice) * this.feeNow) / 100 + Number.EPSILON) * 10000) / 10000
 
+    this.accountBalance = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) + this.currencyPriceWithFees + Number.EPSILON) * 1000) / 1000
+
     console.log(amount)
+  }
+
+
+  showInfo() {
+    this.alert.showOk(this.feeNow + "% Fee?", "Covers transaction, processing and network maintenance costs for secure and efficient blockchain transactions! (changes every hour)")
   }
 
   /**
@@ -140,22 +151,20 @@ export class SellComponent implements OnInit {
     }
     if (this.acceptedPurchase) {
       console.log("coinsAmount: " + coinsAmount + "  cache: " + this.cache.get(this.currency))
-      // if (coinsAmount > this.cache.get(this.currency)) {
-      //   const alert = await this.alertController.create({
-      //     header: 'Ups',
-      //     subHeader: 'You Don not own that many Coins!',
-      //     buttons: ['OK'],
-      //   });
-      //   await alert.present();
-      // } else {
+
+      if (coinsAmount > parseFloat(this.cache.get(this.currency))) {
+        const alert = await this.alertController.create({
+          header: 'Ups',
+          subHeader: 'You Don not own that many Coins!',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      } else {
 
         this.checkout.transferSell(this.currency, coinsAmount, this.currencyPriceWithFees)
 
-        this.toast.presentToast("Successfuly Sold Currency", 1500, "danger", "bottom", "checkmark")
 
-      // }
-
-
+      }
     }
 
 

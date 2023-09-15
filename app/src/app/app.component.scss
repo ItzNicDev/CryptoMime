@@ -22,7 +22,12 @@
 }
 
 .icon {
-  font-size: 23px;
+  font-size: 28px;
+}
+
+.icon:hover {
+  transition: 0.3s;
+  color: #1478e0;
 }
 
 

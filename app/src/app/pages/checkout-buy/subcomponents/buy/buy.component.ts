@@ -16,7 +16,7 @@ import {AlertService} from "../../../../services/alert.service";
       state('void', style({opacity: 0})),
       state('*', style({opacity: 1})),
       transition(':enter, :leave', [
-        animate('250ms ease-in-out'),
+        animate('400ms ease-in-out'),
       ]),
     ]),
   ],
@@ -31,11 +31,14 @@ export class BuyComponent implements OnInit {
   public showIcon: boolean = false;
   public feeNow: number = 0;
 
+  public accountBalance: number = 0;
+
   constructor(private checkout: CheckoutService, private toast: ToastService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private alert: AlertService) {
   }
 
   ngOnInit() {
     this.feeNow = this.checkout.getFees();
+    this.accountBalance = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) - this.currencyPriceWithFees + Number.EPSILON) * 1000) / 1000
   }
 
   async wheelHandler() {
@@ -105,6 +108,7 @@ export class BuyComponent implements OnInit {
     this.currencyPrice = (await this.api.getNow(this.currency)).toFixed(4);
     // this.currencyPriceWithFees = this.currencyPrice + (this.currencyPriceWithFees * this.feeNow) / 100;
     this.currencyPriceWithFees = Math.round((parseFloat(this.currencyPrice) + (parseFloat(this.currencyPrice) * this.feeNow) / 100 + Number.EPSILON) * 10000) / 10000
+    this.accountBalance = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) - this.currencyPriceWithFees + Number.EPSILON) * 1000) / 1000
 
 
   }
@@ -113,7 +117,8 @@ export class BuyComponent implements OnInit {
     this.amountOfCoins = amount
     this.currencyPrice = (await this.api.getNow(this.currency) * amount).toFixed(4);
     this.currencyPriceWithFees = (Math.round((parseFloat(this.currencyPrice) + (parseFloat(this.currencyPrice) * this.feeNow) / 100 + Number.EPSILON) * 10000) / 10000);
-
+    this.accountBalance = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) - this.currencyPriceWithFees + Number.EPSILON) * 1000) / 1000
+    //
 
     // this.currencyPriceWithFees = this.currencyPrice + (this.currencyPriceWithFees * this.feeNow) / 100;
   }

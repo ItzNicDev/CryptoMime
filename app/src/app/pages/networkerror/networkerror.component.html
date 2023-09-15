@@ -1,0 +1,47 @@
+<!--<ion-content>-->
+
+<ion-app>
+
+  <ion-content class="ion-padding">
+<!--    <ion-refresher slot="fixed">-->
+
+    <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="retrySwipe()">
+      <ion-refresher-content style="margin-top: 25px"></ion-refresher-content>
+    </ion-refresher>
+
+
+    <div *ngIf="showSpinner" style="display: flex; justify-content: center">
+      <ion-spinner style="position: absolute; margin-top: 25px"></ion-spinner>
+    </div>
+
+      <div style="display: flex; justify-content: center; margin-top: 200px">
+        <svg width="116" viewBox="0 0 416 351" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M284.13 245.59C263.079 226.879 235.894 216.544 207.73 216.544C179.566 216.544 152.381 226.879 131.33 245.59M345.18 184.54C307.898 149.679 258.762 130.285 207.72 130.285C156.678 130.285 107.542 149.679 70.26 184.54M399.44 117.11C346.673 70.0375 278.432 44.0228 207.72 44.0228C137.008 44.0228 68.7671 70.0375 16 117.11"
+            stroke="#646464" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+          <path
+            d="M207.72 351C201.391 351 195.204 349.123 189.942 345.607C184.679 342.091 180.578 337.093 178.156 331.246C175.734 325.399 175.1 318.965 176.335 312.757C177.57 306.55 180.617 300.848 185.093 296.373C189.568 291.897 195.27 288.85 201.477 287.615C207.684 286.38 214.119 287.014 219.966 289.436C225.813 291.858 230.811 295.959 234.327 301.222C237.843 306.484 239.72 312.671 239.72 319C239.72 327.487 236.349 335.626 230.347 341.627C224.346 347.629 216.207 351 207.72 351Z"
+            fill="#646464"/>
+          <path d="M294 309L61 16" stroke="#E2E2E2" stroke-width="31" stroke-linecap="round"/>
+        </svg>
+
+      </div>
+      <div style="display: flex; justify-content: center; margin-top: 20px">
+        <p style="width: 250px; text-align: center; font-size: 20px">There´s is no network connection. Make sure you are
+          connected to a Wi-Fi
+          or mobile network</p>
+      </div>
+
+
+      <div style="display: flex; justify-content: center; margin-top: 0px">
+
+        <ion-button style="width: 100px; font-size: 10px" (click)="retryPress()" >RETRY</ion-button>
+      </div>
+
+<!--    </ion-refresher>-->
+  </ion-content>
+
+</ion-app>
+
+
+<!--</ion-content>-->

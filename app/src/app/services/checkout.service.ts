@@ -48,7 +48,7 @@ export class CheckoutService implements OnInit {
 
 
     this.cache.setEncrypted((parseFloat(this.cache.getEncrypted("walletValue")) - currencyPrice).toString(), "walletValue");
-    this.toast.presentToast("Transaction was Successful!", 2500, "success", "bottom", "checkmark")
+    this.toast.presentToast("Transaction was Successful!", 1000, "success", "bottom", "checkmark")
 
   }
 
@@ -71,7 +71,7 @@ export class CheckoutService implements OnInit {
     }
 
     this.cache.setEncrypted((parseFloat(this.cache.getEncrypted("walletValue")) + currencyPrice).toString(), "walletValue");
-
+    this.toast.presentToast("Successfuly Sold Currency", 1000, "danger", "bottom", "checkmark")
   }
 
   getFees() {

@@ -9,7 +9,7 @@ import {MinerComponent} from "./pages/miner/miner.component";
 import {AchievementsComponent} from "./pages/achievements/achievements.component";
 
 const routes: Routes = [
-  {path: "", component: MainPageComponent},
+  // {path: "", component: MainPageComponent},
   {path: "wallet", component: MainPageComponent},
   {path: "achievement", component: AchievementsComponent},
   {path: "marketplace", component: MarketplaceComponent},
