@@ -75,11 +75,6 @@ We highly value your feedback! If you have suggestions, questions, or comments, 
 
 For inquiries, contact our support team at itznicdev@gmail.com
 
-## License
-
-This project is licensed under the [MIT License](LICENSE), allowing you to modify and distribute the code as needed.
-
----
 
 Thank you for choosing CryptoMime! We hope you enjoy your simulated cryptocurrency trading experience. Please remember that while the app offers valuable insights, exercising caution and conducting thorough research is important when making real investment decisions. Happy trading!
 >>>>>>> origin/main
