@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CacheService} from "../../../../services/cache.service";
 import {Router} from "@angular/router";
+import {NavController} from "@ionic/angular";
 
 @Component({
   selector: 'app-wallet',
@@ -11,7 +12,7 @@ export class WalletComponent implements OnInit {
 
   public walletValue: number = 0;
 
-  constructor(private router: Router, private cache: CacheService) {
+  constructor(private nativeRouter: NavController,private router: Router, private cache: CacheService) {
   }
 
   ngOnInit() {

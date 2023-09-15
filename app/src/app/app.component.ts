@@ -3,6 +3,7 @@ import {ApiService} from "./services/api.service";
 import {StorageService} from "./services/storage.service";
 import {Network} from '@capacitor/network';
 import {Router} from "@angular/router";
+import {NavController} from "@ionic/angular";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
 
   public hasInternet: boolean = false;
 
-  constructor(private api: ApiService, private storage: StorageService, private router: Router) {
+  constructor(private nativeRouter: NavController, private api: ApiService, private storage: StorageService, private router: Router) {
   }
 
 
@@ -27,6 +28,11 @@ export class AppComponent implements OnInit {
     }
 
 
+  }
+
+
+  test() {
+    this.nativeRouter.navigateForward(["checkout"])
   }
 
 }
