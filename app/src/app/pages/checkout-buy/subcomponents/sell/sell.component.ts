@@ -47,7 +47,7 @@ export class SellComponent implements OnInit {
   public calculatedWorth: number[] = [];
 
 
-  constructor(private alert:AlertService ,private checkout: CheckoutService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private toast: ToastService) {
+  constructor(private alert: AlertService, private checkout: CheckoutService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private toast: ToastService) {
   }
 
   async ngOnInit() {
@@ -155,7 +155,7 @@ export class SellComponent implements OnInit {
       if (coinsAmount > parseFloat(this.cache.get(this.currency))) {
         const alert = await this.alertController.create({
           header: 'Ups',
-          subHeader: 'You Don not own that many Coins!',
+          subHeader: 'You Do not own that many Coins!',
           buttons: ['OK'],
         });
         await alert.present();
