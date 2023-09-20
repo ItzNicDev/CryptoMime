@@ -126,7 +126,7 @@ export class CheckoutBuyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedOrder = this.cache.get("checkoutOrder");
+    // this.selectedOrder = this.cache.get("checkoutOrder");
     this.money = this.cache.get("walletValue")
   }
 

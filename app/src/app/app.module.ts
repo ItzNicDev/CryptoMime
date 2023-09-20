@@ -22,9 +22,10 @@ import {BuyComponent} from "./pages/checkout-buy/subcomponents/buy/buy.component
 import {SellComponent} from "./pages/checkout-buy/subcomponents/sell/sell.component";
 import {NetworkPlugin} from "@capacitor/network/dist/esm/definitions";
 import {NetworkerrorComponent} from "./pages/networkerror/networkerror.component";
+import {TestingComponent} from "./pages/testing/testing.component";
 
 @NgModule({
-  declarations: [AppComponent, MainPageComponent, WalletComponent, HeaderComponent, ProfileComponent, WalletComponent, MarketplaceComponent, RankingsComponent, AchievementsComponent, CheckoutBuyComponent, MinerComponent, NavbarComponent, BuyComponent, SellComponent, NetworkerrorComponent],
+  declarations: [AppComponent, MainPageComponent, TestingComponent, WalletComponent, HeaderComponent, ProfileComponent, WalletComponent, MarketplaceComponent, RankingsComponent, AchievementsComponent, CheckoutBuyComponent, MinerComponent, NavbarComponent, BuyComponent, SellComponent, NetworkerrorComponent],
   imports: [BrowserAnimationsModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
   bootstrap: [AppComponent],

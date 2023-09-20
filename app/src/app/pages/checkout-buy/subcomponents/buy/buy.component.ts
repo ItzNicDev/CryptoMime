@@ -37,6 +37,7 @@ export class BuyComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedOrder = this.cache.get("checkoutOrder");
     this.feeNow = this.checkout.getFees();
     this.accountBalance = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) - this.currencyPriceWithFees + Number.EPSILON) * 1000) / 1000
   }

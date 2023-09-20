@@ -5,18 +5,23 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title  size="large">Marketplace</ion-title>
+      <ion-title size="large">Marketplace</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-card *ngFor="let item of items">
+  <ion-card *ngFor="let item of items" (click)="clickOnCard();">
 
 
-
-<!--    <img style="height: 70px; width: 100%" src="assets/images/chart.png">-->
-      <ion-icon style="position: absolute; right: 0; margin-top: 10px; margin-right: 10px; font-size: 20px"  name="bookmark"></ion-icon>
+    <!--    <img style="height: 70px; width: 100%" src="assets/images/chart.png">-->
+    <ion-icon style="position: absolute; right: 0; margin-top: 10px; margin-right: 10px; font-size: 20px"
+              name="bookmark"></ion-icon>
 
 
     <ion-card-header>
@@ -26,17 +31,21 @@
         <ion-label style=" float:right;font-size: 24px; color: #8f8f8f">${{item.now}}</ion-label>
         <br>
 
+
         <div style="float: right; margin-top: -20px">
           <svg xmlns="http://www.w3.org/2000/svg" width="6" viewBox="0 0 37 48" fill="none">
-            <path d="M16 45.006C16 46.3867 17.1193 47.506 18.5 47.506C19.8807 47.506 21 46.3867 21 45.006H16ZM20.2678 1.22628C19.2915 0.249971 17.7085 0.249971 16.7322 1.22628L0.82233 17.1362C-0.15398 18.1125 -0.15398 19.6954 0.82233 20.6717C1.79864 21.648 3.38155 21.648 4.35786 20.6717L18.5 6.52958L32.6421 20.6717C33.6184 21.648 35.2014 21.648 36.1777 20.6717C37.154 19.6954 37.154 18.1125 36.1777 17.1362L20.2678 1.22628ZM21 45.006L21 2.99405H16L16 45.006H21Z" fill="#5D5D5DFF"/>
+            <path
+              d="M16 45.006C16 46.3867 17.1193 47.506 18.5 47.506C19.8807 47.506 21 46.3867 21 45.006H16ZM20.2678 1.22628C19.2915 0.249971 17.7085 0.249971 16.7322 1.22628L0.82233 17.1362C-0.15398 18.1125 -0.15398 19.6954 0.82233 20.6717C1.79864 21.648 3.38155 21.648 4.35786 20.6717L18.5 6.52958L32.6421 20.6717C33.6184 21.648 35.2014 21.648 36.1777 20.6717C37.154 19.6954 37.154 18.1125 36.1777 17.1362L20.2678 1.22628ZM21 45.006L21 2.99405H16L16 45.006H21Z"
+              fill="#5D5D5DFF"/>
           </svg>
 
           <ion-label style="font-size: 10px; color: #7cc751">${{item.high}}</ion-label>
 
 
-
           <svg style="margin-left: 5px" xmlns="http://www.w3.org/2000/svg" width="6" viewBox="0 0 37 48" fill="none">
-            <path d="M21 2.99405C21 1.61334 19.8807 0.494049 18.5 0.494049C17.1193 0.494049 16 1.61334 16 2.99405L21 2.99405ZM16.7322 46.7737C17.7085 47.75 19.2915 47.75 20.2678 46.7737L36.1777 30.8638C37.154 29.8875 37.154 28.3046 36.1777 27.3283C35.2014 26.352 33.6184 26.352 32.6421 27.3283L18.5 41.4704L4.35786 27.3283C3.38155 26.352 1.79864 26.352 0.82233 27.3283C-0.15398 28.3046 -0.15398 29.8875 0.82233 30.8638L16.7322 46.7737ZM16 2.99405L16 45.006H21L21 2.99405L16 2.99405Z" fill="#5D5D5DFF"/>
+            <path
+              d="M21 2.99405C21 1.61334 19.8807 0.494049 18.5 0.494049C17.1193 0.494049 16 1.61334 16 2.99405L21 2.99405ZM16.7322 46.7737C17.7085 47.75 19.2915 47.75 20.2678 46.7737L36.1777 30.8638C37.154 29.8875 37.154 28.3046 36.1777 27.3283C35.2014 26.352 33.6184 26.352 32.6421 27.3283L18.5 41.4704L4.35786 27.3283C3.38155 26.352 1.79864 26.352 0.82233 27.3283C-0.15398 28.3046 -0.15398 29.8875 0.82233 30.8638L16.7322 46.7737ZM16 2.99405L16 45.006H21L21 2.99405L16 2.99405Z"
+              fill="#5D5D5DFF"/>
           </svg>
           <ion-label style="font-size: 10px; color: #dc4040">${{item.low}}</ion-label>
         </div>
@@ -52,11 +61,17 @@
     </ion-card-content>
 
 
-    <div style="margin-left: 10px; margin-bottom: 10px; display: flex;justify-content: center">
-      <ion-button (click)="checkoutBuy(item.name)" size="small" color="success" style="width: 40%; margin-right: 20px">BUY</ion-button>
-      <ion-button (click)="checkoutSell(item.name)" size="small" color="danger" style="width: 40%; margin-right: 20px">SELL</ion-button>
+    <!--    <div style="margin-left: 10px; margin-bottom: 10px; display: flex;justify-content: center">-->
+
+    <div>
+      <ion-button (click)="checkoutBuy(item.name)" fill="outline" size="small" color="warning"
+                  style="float:left;width: 30%; margin-left: 20px; margin-bottom: 20px">CHECKOUT
+        <ion-icon style="margin-left: -3px" name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+
 
     </div>
+
 
   </ion-card>
 

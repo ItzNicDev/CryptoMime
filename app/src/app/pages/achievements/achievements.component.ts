@@ -19,6 +19,10 @@ export class AchievementsComponent implements OnInit {
     this.router.navigate(["wallet"])
   }
 
+  redirectToTest() {
+    this.router.navigate(["test"])
+  }
+
   clearLocalStorage() {
     localStorage.clear();
   }

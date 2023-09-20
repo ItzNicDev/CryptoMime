@@ -4,10 +4,10 @@
     <ion-card-subtitle [@buttonSwap]="true">From tangible to virtual</ion-card-subtitle>
   </ion-card-header>
   <ion-card-content>
-    <ion-item>
+    <ion-item (click)="wheelHandler()">
       <ion-label>Currency</ion-label>
       <ion-label>{{this.selectedOrder}}</ion-label>
-      <ion-button fill="clear" size="small" (click)="wheelHandler()">
+      <ion-button fill="clear" size="small" >
         <ion-icon name="caret-down"></ion-icon>
       </ion-button>
     </ion-item>

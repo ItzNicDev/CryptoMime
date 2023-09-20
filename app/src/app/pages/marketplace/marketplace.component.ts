@@ -105,6 +105,18 @@ export class MarketplaceComponent implements OnInit {
   }
 
 
+  clickOnCard() {
+    // alert("info to currency")
+  }
+
+  handleRefresh() {
+    setTimeout(() => {
+      location.reload();
+      // this.router.navigate(["marketplace"])
+    }, 500);
+
+  }
+
 
 
 
@@ -112,6 +124,7 @@ export class MarketplaceComponent implements OnInit {
 
     this.cache.set(currency,"checkoutOrder")
     this.router.navigate(["checkout"]);
+
 
   }
 

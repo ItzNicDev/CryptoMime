@@ -76,7 +76,7 @@ export class CheckoutService implements OnInit {
 
   getFees() {
     let now = new Date();
-    let mapped = this.mapValue(now.getUTCHours(), 0, 100, 0, 5)
+    let mapped = this.mapValue(now.getUTCHours(), 0, 24, 0, 1);
     return Math.round((mapped * 100)) / 100;
   }
 
@@ -125,6 +125,8 @@ export class CheckoutService implements OnInit {
     }
 
   }
+
+
 
   mapValue(input: number, inputMin: number, inputMax: number, outputMin: number, outputMax: number): number {
     input = Math.max(inputMin, Math.min(input, inputMax));

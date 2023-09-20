@@ -7,6 +7,7 @@ import {MarketplaceComponent} from "./pages/marketplace/marketplace.component";
 import {CheckoutBuyComponent} from "./pages/checkout-buy/checkout-buy.component";
 import {MinerComponent} from "./pages/miner/miner.component";
 import {AchievementsComponent} from "./pages/achievements/achievements.component";
+import {TestingComponent} from "./pages/testing/testing.component";
 
 const routes: Routes = [
   // {path: "", component: MainPageComponent},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: "marketplace", component: MarketplaceComponent},
   {path: "rankings", component: RankingsComponent},
   {path: "miner", component: MinerComponent},
-  {path: "checkout", component: CheckoutBuyComponent}
+  {path: "checkout", component: CheckoutBuyComponent},
+  {path: "test", component: TestingComponent}
 
 ];
 

@@ -29,6 +29,13 @@ export class MainPageComponent implements OnInit {
 
   }
 
+  handleRefresh() {
+    setTimeout(() => {
+      // Any calls to load data go here
+      location.reload();
+    }, 500);
+  }
+
 
   async ngOnInit() {
     //sofern es die json gibt!

@@ -35,7 +35,7 @@ export class WalletComponent implements OnInit {
   }
 
   openAchievments() {
-    this.router.navigate(["achievement"])
+    // this.router.navigate(["achievement"])
   }
 
 }
