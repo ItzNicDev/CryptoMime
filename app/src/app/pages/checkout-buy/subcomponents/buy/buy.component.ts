@@ -6,6 +6,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ToastService} from "../../../../services/toast.service";
 import {CheckoutService} from "../../../../services/checkout.service";
 import {AlertService} from "../../../../services/alert.service";
+import {SharedService} from "../../../../services/shared.service";
 
 @Component({
   selector: 'app-buy',
@@ -33,11 +34,18 @@ export class BuyComponent implements OnInit {
 
   public accountBalance: number = 0;
 
-  constructor(private checkout: CheckoutService, private toast: ToastService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private alert: AlertService) {
+  constructor(private sharedService: SharedService,private checkout: CheckoutService, private toast: ToastService, private alertController: AlertController, private pickerCtrl: PickerController, private api: ApiService, private cache: CacheService, private alert: AlertService) {
   }
 
   ngOnInit() {
-    this.selectedOrder = this.cache.get("checkoutOrder");
+
+
+    this.sharedService.someValue$.subscribe(value => {
+      this.currency = value;
+      this.selectedOrder = this.checkout.formatCurrency(value);
+      this.loadCurrencyPrice();
+    });
+
     this.feeNow = this.checkout.getFees();
     this.accountBalance = Math.round((parseFloat(this.cache.getEncrypted("walletValue")) - this.currencyPriceWithFees + Number.EPSILON) * 1000) / 1000
   }

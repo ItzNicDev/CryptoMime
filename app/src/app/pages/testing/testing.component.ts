@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 
 import * as echarts from 'echarts';
+import {SharedService} from "../../services/shared.service";
 
 
 @Component({
@@ -12,12 +13,16 @@ import * as echarts from 'echarts';
 export class TestingComponent implements OnInit {
 
   public options: any;
-
-  constructor() {
+public someValue: any = "old value";
+  constructor(private sharedService: SharedService) {
   }
 
   async ngOnInit() {
 
+
+    this.sharedService.someValue$.subscribe(value => {
+      this.someValue = value;
+    });
     const chartElement = document.getElementById('echarts-container');
     const myChart = echarts.init(chartElement);
 

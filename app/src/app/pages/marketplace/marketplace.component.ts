@@ -5,6 +5,7 @@ import {CacheService} from "../../services/cache.service";
 import {CheckoutService} from "../../services/checkout.service";
 import {CheckoutBuyComponent} from "../checkout-buy/checkout-buy.component";
 import {WalletComponent} from "../main-page/subcomponents/wallet/wallet.component";
+import {SharedService} from "../../services/shared.service";
 
 @Component({
   selector: 'app-marketplace',
@@ -92,7 +93,7 @@ export class MarketplaceComponent implements OnInit {
   ];
 
 
-  constructor(private api: ApiService, private router: Router, private cache: CacheService) {
+  constructor(private sharedService: SharedService ,private api: ApiService, private router: Router, private cache: CacheService) {
   }
 
   async ngOnInit() {
@@ -124,6 +125,7 @@ export class MarketplaceComponent implements OnInit {
 
     this.cache.set(currency,"checkoutOrder")
     this.router.navigate(["checkout"]);
+    this.sharedService.setSomeValue(currency);
 
 
   }
