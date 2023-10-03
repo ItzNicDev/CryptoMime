@@ -33,7 +33,7 @@
     "@capacitor/splash-screen": "^5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@capacitor/storage": "^1.2.5",
-    "@ionic/angular": "^7.0.0",
+    "@ionic/angular": "^7.4.2-dev.11695832397.13fa6703",
     "angular-google-charts": "^2.2.3",
     "apexcharts": "^3.42.0",
     "cordova-plugin-network-information": "^3.0.0",
