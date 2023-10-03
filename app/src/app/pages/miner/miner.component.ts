@@ -7,12 +7,14 @@ import {Component, OnInit} from '@angular/core';
 })
 export class MinerComponent implements OnInit {
   public hash: any;
-readonly hashSpeed: number = 85;
+  readonly hashSpeed: number = 85 ;
+
+  public progress: number = 0.6;
+
   constructor() {
   }
 
   ngOnInit() {
-
     this.generateRandom64BitHex();
     setInterval(this.generateRandom64BitHex.bind(this), this.hashSpeed);//lower is better
 
@@ -25,7 +27,7 @@ readonly hashSpeed: number = 85;
     const highHex = highPart.toString(16).padStart(8, '0');
     const lowHex = lowPart.toString(16).padStart(8, '0');
     const hex64BitNumber = highHex + lowHex;
-    this.hash =  hex64BitNumber;
+    this.hash = hex64BitNumber;
   }
 
 
